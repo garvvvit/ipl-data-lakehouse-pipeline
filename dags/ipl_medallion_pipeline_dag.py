@@ -1,4 +1,3 @@
-
 import os
 from datetime import datetime, timedelta
 import requests
@@ -89,17 +88,6 @@ default_args = {
     "start_date": datetime(2026, 1, 1),
 }
 
-# Spot Cluster Config for Cost Optimization (~70% saving)
-spark_job_cluster = {
-    "spark_version": "13.3.x-scala2.12",
-    "node_type_id": "i3.xlarge",
-    "aws_attributes": {
-        "availability": "SPOT",
-        "instance_profile_arn": "arn:aws:iam::925729918104:instance-profile/databricks-s3-access-role",
-    },
-    "num_workers": 2,
-}
-
 # ==========================================
 # STEP 3: WORKFLOW DAG DEFINITION
 # ==========================================
@@ -118,30 +106,36 @@ with DAG(
     ingest_bronze_task = DatabricksSubmitRunOperator(
         task_id="ingest_raw_s3_to_bronze",
         databricks_conn_id="databricks_default",
-        new_cluster=spark_job_cluster,
-        notebook_task={
-            "notebook_path": "/Users/garvitdhiman2002@gmail.com/01_bronze_autoloader",
-        },
+        tasks=[{
+            "task_key": "ingest_bronze",
+            "notebook_task": {
+                "notebook_path": "/Users/garvitdhiman2002@gmail.com/01_bronze_autoloader",
+            }
+        }],
     )
 
     # Task 2: Parse JSON & Flatten into Silver Delivery Events Table
     transform_silver_task = DatabricksSubmitRunOperator(
         task_id="transform_bronze_to_silver",
         databricks_conn_id="databricks_default",
-        new_cluster=spark_job_cluster,
-        notebook_task={
-            "notebook_path": "/Users/garvitdhiman2002@gmail.com/02_silver_transformations",
-        },
+        tasks=[{
+            "task_key": "transform_silver",
+            "notebook_task": {
+                "notebook_path": "/Users/garvitdhiman2002@gmail.com/02_silver_transformations",
+            }
+        }],
     )
 
     # Task 3: Aggregate Gold Business Datamarts & Apply Z-Ordering
     aggregate_gold_task = DatabricksSubmitRunOperator(
         task_id="aggregate_silver_to_gold",
         databricks_conn_id="databricks_default",
-        new_cluster=spark_job_cluster,
-        notebook_task={
-            "notebook_path": "/Users/garvitdhiman2002@gmail.com/03_gold_analytics_tables",
-        },
+        tasks=[{
+            "task_key": "aggregate_gold",
+            "notebook_task": {
+                "notebook_path": "/Users/garvitdhiman2002@gmail.com/03_gold_analytics_tables",
+            }
+        }],
         on_success_callback=on_success_callback,  # Triggers Slack Success Card when Gold finishes!
     )
 
