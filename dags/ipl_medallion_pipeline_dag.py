@@ -120,7 +120,7 @@ with DAG(
         databricks_conn_id="databricks_default",
         new_cluster=spark_job_cluster,
         notebook_task={
-            "notebook_path": "/Workspace/Users/garvit/ipl-realtime-data-engineering-pipeline/notebooks/01_bronze_autoloader",
+            "notebook_path": "/Users/garvitdhiman2002@gmail.com/01_bronze_autoloader",
         },
     )
 
@@ -130,7 +130,7 @@ with DAG(
         databricks_conn_id="databricks_default",
         new_cluster=spark_job_cluster,
         notebook_task={
-            "notebook_path": "/Workspace/Users/garvit/ipl-realtime-data-engineering-pipeline/notebooks/02_silver_transformations",
+            "notebook_path": "/Users/garvitdhiman2002@gmail.com/02_silver_transformations",
         },
     )
 
@@ -140,7 +140,7 @@ with DAG(
         databricks_conn_id="databricks_default",
         new_cluster=spark_job_cluster,
         notebook_task={
-            "notebook_path": "/Workspace/Users/garvit/ipl-realtime-data-engineering-pipeline/notebooks/03_gold_analytics_tables",
+            "notebook_path": "/Users/garvitdhiman2002@gmail.com/03_gold_analytics_tables",
         },
         on_success_callback=on_success_callback,  # Triggers Slack Success Card when Gold finishes!
     )
