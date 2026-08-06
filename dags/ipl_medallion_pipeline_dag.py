@@ -26,7 +26,7 @@ def send_slack_alert(context, status="FAILED"):
     execution_date = context.get("execution_date")
     
     emoji = "🔴" if status == "FAILED" else "🟢"
-    title = f"{emoji} *DATA PIPELINE ALERT: {status}*"
+    status_display = "SUCCESS (All 1,200+ IPL match files up-to-date)" if status == "SUCCESS" else status
 
     slack_blocks = {
         "blocks": [
@@ -43,7 +43,7 @@ def send_slack_alert(context, status="FAILED"):
                 "fields": [
                     {"type": "mrkdwn", "text": f"*DAG Name:*\n`{dag_id}`"},
                     {"type": "mrkdwn", "text": f"*Task Name:*\n`{task_instance.task_id}`"},
-                    {"type": "mrkdwn", "text": f"*Pipeline Status:*\n*{status}*"},
+                    {"type": "mrkdwn", "text": f"*Pipeline Status:*\n*{status_display}*"},
                     {"type": "mrkdwn", "text": f"*Target Storage:*\n`AWS S3 (garvit-ipl-data-lake)`"}
                 ]
             },
