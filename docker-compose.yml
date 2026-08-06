@@ -20,6 +20,7 @@ services:
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
       AIRFLOW__CORE__LOAD_EXAMPLES: 'False'
       _PIP_ADDITIONAL_REQUIREMENTS: "apache-airflow-providers-databricks==4.5.0 requests"
+      SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL}
     command: >
       bash -c "airflow db migrate &&
                airflow users create --username airflow --password airflow --firstname Garvit --lastname DataEng --role Admin --email admin@example.com || true"
@@ -35,6 +36,7 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: 'False'
       AIRFLOW__CORE__LOGGING_LEVEL: INFO
       _PIP_ADDITIONAL_REQUIREMENTS: "apache-airflow-providers-databricks==4.5.0 requests"
+      SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL}
     volumes:
       - ./dags:/opt/airflow/dags
     ports:
@@ -52,6 +54,7 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: 'False'
       AIRFLOW__CORE__LOGGING_LEVEL: INFO
       _PIP_ADDITIONAL_REQUIREMENTS: "apache-airflow-providers-databricks==4.5.0 requests"
+      SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL}
     volumes:
       - ./dags:/opt/airflow/dags
     command: airflow scheduler
