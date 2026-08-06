@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook Checkpoints & Data
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+.virtual_documents/
+
+# Airflow logs and database
+logs/
+*.log
+airflow.db
+airflow.cfg
+webserver_config.py
+airflow-webserver.pid
+
+# Environments & Secret files
+.env
+.venv
+env/
+venv/
+ENV/
+*.pem
+*.key
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Data & Local Spark/Delta Checkpoints
+data/
+checkpoints/
+*.db
+*.sqlite
